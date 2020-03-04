@@ -6,9 +6,9 @@
   "scripts": {
     "build:commonjs": "babel src --out-dir dist",
     "build:umd": "cross-env FILE_NAME=blockdemy-sso webpack",
-    "build:umd:min": "cross-env NODE_ENV=production npm run build:umd",
+    "build:umd:min": "cross-env NODE_ENV=production yarn build:umd",
     "clean": "rimraf lib dist",
-    "build": "npm run clean && npm run build:commonjs && npm run build:umd && npm run build:umd:min",
+    "build": "yarn clean && yarn build:commonjs && yarn build:umd && yarn build:umd:min",
     "lint": "eslint src --ext .js,.jsx",
     "start": "nodemon src/index.js --exec babel-watch"
   },
