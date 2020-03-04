@@ -53,7 +53,7 @@ class BlockdemySSO {
   }
 
   // START OF QUERIES
-  getUsersByIds = async ids => {
+  usersByIds = async ids => {
     const { data, errors } = await this.client.query({
       query: GET_USERS,
       variables: { ids }
@@ -64,7 +64,7 @@ class BlockdemySSO {
     return data.usersByIds;
   };
 
-  getUserById = async id => {
+  userById = async id => {
     const { data, errors } = await this.client.query({
       query: GET_USER,
       variables: { id }
@@ -75,7 +75,7 @@ class BlockdemySSO {
     return data.user;
   };
 
-  getUserByUsername = async username => {
+  userByUsername = async username => {
     const { data, errors } = await this.client.query({
       query: GET_USER_BY_USERNAME,
       variables: { username }
@@ -190,7 +190,7 @@ class BlockdemySSO {
 
   populateUsers = schema => {
     schema.post('find', async localUsers => {
-      const remoteUsers = await this.getUsersByIds(localUsers.map(({ ssoId }) => ssoId));
+      const remoteUsers = await this.usersByIds(localUsers.map(({ ssoId }) => ssoId));
 
       for (let i = 0; i < localUsers.length; i++) {
         localUsers[i].username = remoteUsers[i].username;
@@ -204,7 +204,7 @@ class BlockdemySSO {
 
     schema.post('findOne', async localUser => {
       if (localUser) {
-        const remoteUser = await this.getUserById(localUser.ssoId);
+        const remoteUser = await this.userById(localUser.ssoId);
 
         localUser.username = remoteUser.username;
         localUser.firstName = remoteUser.firstName;
