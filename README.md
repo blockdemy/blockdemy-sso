@@ -28,8 +28,9 @@ import BlockdemySSO from 'blockdemy-sso'
 // SSO_URL is the SSO API Url. 
 // It can be changed to use on development with a localhost url
 const SSO_URL = 'https://api.id.blockdemy.com'
+const API_KEY = '<API_KEY>'
 
-const SingleSignOn = new BlockdemySSO(SSO_URL);
+const SingleSignOn = new BlockdemySSO(API_KEY, SSO_URL);
 
 // Examples
 const start = async () => {

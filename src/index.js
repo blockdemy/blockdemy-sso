@@ -18,12 +18,15 @@ import {
 import { USER_EDIT, USER_ADD_ETH_ADDRESS, USER_EDIT_PASSWORD } from './requests/mutations';
 
 class BlockdemySSO {
-  constructor(SSO_URL) {
+  constructor(API_KEY, SSO_URL) {
     const cache = new InMemoryCache();
 
     const httpLink = new HttpLink({
-      uri: SSO_URL,
-      fetch
+      uri: SSO_URL || 'https://id.blockdemy.com/graphql',
+      fetch,
+      headers: {
+        authorization: `Bearer ${API_KEY}`
+      }
     });
 
     const errorHandler = onError(({ graphQLErrors, networkError }) => {
