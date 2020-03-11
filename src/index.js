@@ -6,6 +6,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import {
   GET_USER,
+  GET_USER_FROM_TOKEN,
   GET_USERS,
   GET_USER_BY_USERNAME,
   USERNAME_EXISTS,
@@ -67,10 +68,21 @@ class BlockdemySSO {
     return data.usersByIds;
   };
 
-  userById = async id => {
+  user = async id => {
     const { data, errors } = await this.client.query({
       query: GET_USER,
       variables: { id }
+    });
+
+    if (errors) throw errors;
+
+    return data.user;
+  };
+
+  userFromToken = async token => {
+    const { data, errors } = await this.client.query({
+      query: GET_USER_FROM_TOKEN,
+      variables: { token }
     });
 
     if (errors) throw errors;
@@ -207,7 +219,7 @@ class BlockdemySSO {
 
     schema.post('findOne', async localUser => {
       if (localUser) {
-        const remoteUser = await this.userById(localUser.ssoId);
+        const remoteUser = await this.user(localUser.ssoId);
 
         localUser.username = remoteUser.username;
         localUser.firstName = remoteUser.firstName;

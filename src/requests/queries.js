@@ -9,6 +9,14 @@ const GET_USER = gql`
   }
 `;
 
+const GET_USER_FROM_TOKEN = gql`
+  query userFromToken($token: Token!) {
+    userFromToken(token: $token) {
+      ${allUserData}
+    }
+  }
+`;
+
 const GET_USERS = gql`
   query usersByIds($ids: [ID!]!) {
     usersByIds(ids: $ids) {
@@ -67,6 +75,7 @@ const USER_SEARCH = gql`
 
 export {
   GET_USER,
+  GET_USER_FROM_TOKEN,
   GET_USERS,
   GET_USER_BY_USERNAME,
   USERNAME_EXISTS,
