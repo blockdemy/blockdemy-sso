@@ -10,7 +10,7 @@ const GET_USER = gql`
 `;
 
 const GET_USER_FROM_TOKEN = gql`
-  query userFromToken($token: Token!) {
+  query userFromToken($token: String!) {
     userFromToken(token: $token) {
       ${allUserData}
     }
