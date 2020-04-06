@@ -75,13 +75,17 @@ const USER_SEARCH = gql`
 
 const GET_ORGANIZATION = gql`
   query organization($organizationId: ID!) {
-    ${allOrganizationData}
+    organization(organizationId: $organizationId) {
+      ${allOrganizationData}
+    }
   }
 `;
 
 const GET_ORGANIZATIONS = gql`
-  query organizations($name: String, params: QueryParams) {
-    ${allOrganizationData}
+  query organizationsByIds($ids: [ID!]!) {
+    organizationsByIds(ids: $ids) {
+      ${allOrganizationData}
+    }
   }
 `;
 

@@ -188,7 +188,7 @@ class BlockdemySSO {
 
     if (errors) throw errors;
 
-    return data.organizationsById;
+    return data.organizationsByIds;
   };
   // END OF QUERIES
 
@@ -257,9 +257,8 @@ class BlockdemySSO {
 
   populateOrganizations = schema => {
     schema.post('find', async localOrganizations => {
-      const remoteOrganizations = await this.organizationsByIds(
-        localOrganizations.map(({ ssoId }) => ssoId)
-      );
+      const ids = localOrganizations.map(({ ssoId }) => ssoId);
+      const remoteOrganizations = await this.organizationsByIds(ids);
 
       for (let i = 0; i < localOrganizations.length; i++) {
         localOrganizations[i].name = remoteOrganizations[i].name;
