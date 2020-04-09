@@ -14,7 +14,9 @@ import {
   USER_BY_ADDRESS,
   USER_HAS_ETH_ADDRESS,
   USER_ETH_ADDRESS_EXISTS,
-  USER_SEARCH
+  USER_SEARCH,
+  GET_ORGANIZATION,
+  GET_ORGANIZATIONS
 } from './requests/queries';
 import { USER_EDIT, USER_ADD_ETH_ADDRESS, USER_EDIT_PASSWORD } from './requests/mutations';
 
@@ -166,6 +168,28 @@ class BlockdemySSO {
 
     return data.userSearch;
   };
+
+  organization = async organizationId => {
+    const { data, errors } = await this.client.query({
+      query: GET_ORGANIZATION,
+      variables: { organizationId }
+    });
+
+    if (errors) throw errors;
+
+    return data.organization;
+  };
+
+  organizationsByIds = async ids => {
+    const { data, errors } = await this.client.query({
+      query: GET_ORGANIZATIONS,
+      variables: { ids }
+    });
+
+    if (errors) throw errors;
+
+    return data.organizationsByIds;
+  };
   // END OF QUERIES
 
   // START OF MUTATIONS
@@ -227,6 +251,33 @@ class BlockdemySSO {
         localUser.emails = remoteUser.emails;
         localUser.profileImg = remoteUser.profileImg;
         localUser.ethAddresses = remoteUser.ethAddresses;
+      }
+    });
+  };
+
+  populateOrganizations = schema => {
+    schema.post('find', async localOrganizations => {
+      const ids = localOrganizations.map(({ ssoId }) => ssoId);
+      const remoteOrganizations = await this.organizationsByIds(ids);
+
+      for (let i = 0; i < localOrganizations.length; i++) {
+        localOrganizations[i].name = remoteOrganizations[i].name;
+        localOrganizations[i].logo = remoteOrganizations[i].logo;
+        localOrganizations[i].website = remoteOrganizations[i].website;
+        localOrganizations[i].members = remoteOrganizations[i].members;
+        localOrganizations[i].socialMedia = remoteOrganizations[i].socialMedia;
+      }
+    });
+
+    schema.post('findOne', async localOrganization => {
+      if (localOrganization) {
+        const remoteOrganization = await this.organization(localOrganization.ssoId);
+
+        localOrganization.name = remoteOrganization.name;
+        localOrganization.logo = remoteOrganization.logo;
+        localOrganization.website = remoteOrganization.website;
+        localOrganization.members = remoteOrganization.members;
+        localOrganization.socialMedia = remoteOrganization.socialMedia;
       }
     });
   };

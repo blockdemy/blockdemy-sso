@@ -16,4 +16,22 @@ const allUserData = `
   }
 `;
 
-export { allUserData };
+const allOrganizationData = `
+  id
+  name
+  logo
+  website
+  members {
+    user
+    role
+  }
+  socialMedia {
+    facebook
+    github
+    instagram
+    linkedIn
+    twitter
+  }
+`;
+
+export { allUserData, allOrganizationData };
