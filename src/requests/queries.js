@@ -81,6 +81,14 @@ const GET_ORGANIZATION = gql`
   }
 `;
 
+const GET_ORGANIZATION_BY_IDENTIFIER = gql`
+  query organizationByIdentifier($identifier: String!) {
+    organizationByIdentifier(identifier: $identifier) {
+      ${allOrganizationData}
+    }
+  }
+`;
+
 const GET_ORGANIZATIONS = gql`
   query organizationsByIds($ids: [ID!]!) {
     organizationsByIds(ids: $ids) {
@@ -101,5 +109,6 @@ export {
   USER_ETH_ADDRESS_EXISTS,
   USER_SEARCH,
   GET_ORGANIZATION,
+  GET_ORGANIZATION_BY_IDENTIFIER,
   GET_ORGANIZATIONS
 };

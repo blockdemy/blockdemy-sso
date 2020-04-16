@@ -16,7 +16,8 @@ import {
   USER_ETH_ADDRESS_EXISTS,
   USER_SEARCH,
   GET_ORGANIZATION,
-  GET_ORGANIZATIONS
+  GET_ORGANIZATIONS,
+  GET_ORGANIZATION_BY_IDENTIFIER
 } from './requests/queries';
 import { USER_EDIT, USER_ADD_ETH_ADDRESS, USER_EDIT_PASSWORD } from './requests/mutations';
 
@@ -173,6 +174,17 @@ class BlockdemySSO {
     const { data, errors } = await this.client.query({
       query: GET_ORGANIZATION,
       variables: { organizationId }
+    });
+
+    if (errors) throw errors;
+
+    return data.organization;
+  };
+
+  organizationByIdentifier = async identifier => {
+    const { data, errors } = await this.client.query({
+      query: GET_ORGANIZATION_BY_IDENTIFIER,
+      variables: { identifier }
     });
 
     if (errors) throw errors;
