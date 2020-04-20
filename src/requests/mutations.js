@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { allUserData } from './utils';
+import { allUserData, allOrganizationData } from './utils';
 
 const USER_EDIT = gql`
   mutation userEdit($user: UserToEdit!, $userId: ID!){
@@ -25,4 +25,26 @@ const USER_EDIT_PASSWORD = gql`
   }
 `;
 
-export { USER_EDIT, USER_ADD_ETH_ADDRESS, USER_EDIT_PASSWORD };
+const ORGANIZATION_ADD = gql`
+  mutation organizationAdd($organization: OrganizationToAdd!, $userId: ID!, $verificationCode: String!) {
+    organizationAdd(organization: $organization, userId: $userId, verificationCode: $verificationCode) {
+      ${allOrganizationData}
+    }
+  }
+`;
+
+const ORGANIZATION_EDIT = gql`
+  mutation organizationEdit($organizationId: ID!, $organization: OrganizationToEdit!, $userId: ID!) {
+    organizationEdit(organizationId: $organizationId, organization: $organization, userId: $userId) {
+      ${allOrganizationData}
+    }
+  }
+`;
+
+export {
+  USER_EDIT,
+  USER_ADD_ETH_ADDRESS,
+  USER_EDIT_PASSWORD,
+  ORGANIZATION_ADD,
+  ORGANIZATION_EDIT
+};

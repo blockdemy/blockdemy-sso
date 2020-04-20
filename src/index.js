@@ -19,7 +19,13 @@ import {
   GET_ORGANIZATIONS,
   GET_ORGANIZATION_BY_IDENTIFIER
 } from './requests/queries';
-import { USER_EDIT, USER_ADD_ETH_ADDRESS, USER_EDIT_PASSWORD } from './requests/mutations';
+import {
+  USER_EDIT,
+  USER_ADD_ETH_ADDRESS,
+  USER_EDIT_PASSWORD,
+  ORGANIZATION_ADD,
+  ORGANIZATION_EDIT
+} from './requests/mutations';
 
 class BlockdemySSO {
   constructor(API_KEY, SSO_URL) {
@@ -60,6 +66,7 @@ class BlockdemySSO {
   }
 
   // START OF QUERIES
+  // User
   usersByIds = async ids => {
     const { data, errors } = await this.client.query({
       query: GET_USERS,
@@ -170,6 +177,7 @@ class BlockdemySSO {
     return data.userSearch;
   };
 
+  // Organization
   organization = async organizationId => {
     const { data, errors } = await this.client.query({
       query: GET_ORGANIZATION,
@@ -189,7 +197,7 @@ class BlockdemySSO {
 
     if (errors) throw errors;
 
-    return data.organization;
+    return data.organizationByIdentifier;
   };
 
   organizationsByIds = async ids => {
@@ -205,6 +213,7 @@ class BlockdemySSO {
   // END OF QUERIES
 
   // START OF MUTATIONS
+  // User
   userEdit = async (userId, user) => {
     const { data, errors } = await this.client.mutate({
       mutation: USER_EDIT,
@@ -236,6 +245,29 @@ class BlockdemySSO {
     if (errors) throw errors;
 
     return data.userEditPassword;
+  };
+
+  // Organization
+  organizationAdd = async (organization, userId, verificationCode) => {
+    const { data, errors } = await this.client.mutate({
+      mutation: ORGANIZATION_ADD,
+      variables: { organization, userId, verificationCode }
+    });
+
+    if (errors) throw errors;
+
+    return data.organizationAdd;
+  };
+
+  organizationEdit = async (organizationId, organization, userId) => {
+    const { data, errors } = await this.client.mutate({
+      mutation: ORGANIZATION_EDIT,
+      variables: { organizationId, organization, userId }
+    });
+
+    if (errors) throw errors;
+
+    return data.organizationEdit;
   };
   // END OF MUTATIONS
 
@@ -270,12 +302,14 @@ class BlockdemySSO {
   populateOrganizations = schema => {
     schema.post('find', async localOrganizations => {
       const ids = localOrganizations.map(({ ssoId }) => ssoId);
+
       const remoteOrganizations = await this.organizationsByIds(ids);
 
       for (let i = 0; i < localOrganizations.length; i++) {
         localOrganizations[i].name = remoteOrganizations[i].name;
+        localOrganizations[i].identifier = remoteOrganizations[i].identifier;
         localOrganizations[i].logo = remoteOrganizations[i].logo;
-        localOrganizations[i].website = remoteOrganizations[i].website;
+        localOrganizations[i].domain = remoteOrganizations[i].domain;
         localOrganizations[i].members = remoteOrganizations[i].members;
         localOrganizations[i].socialMedia = remoteOrganizations[i].socialMedia;
       }
@@ -284,10 +318,10 @@ class BlockdemySSO {
     schema.post('findOne', async localOrganization => {
       if (localOrganization) {
         const remoteOrganization = await this.organization(localOrganization.ssoId);
-
         localOrganization.name = remoteOrganization.name;
+        localOrganization.identifier = remoteOrganization.identifier;
         localOrganization.logo = remoteOrganization.logo;
-        localOrganization.website = remoteOrganization.website;
+        localOrganization.domain = remoteOrganization.domain;
         localOrganization.members = remoteOrganization.members;
         localOrganization.socialMedia = remoteOrganization.socialMedia;
       }
