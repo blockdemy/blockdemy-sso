@@ -73,6 +73,9 @@ They can be checked at our <a href="https://api.id.blockdemy.com/graphql">Blockd
 | userHasEthAddress(userId, address)                     | userId: String, address: String                          | Boolean                | Indicates if an specific user owns an ethereum address               |
 | userEthAddressExists(address)                          | address: String                                          | Boolean                | Indicates if an ethereum address has been taken before               |
 | userSearch(query, filters, params)                     | query: Object, filters: Object, params: Object           | Array[Object]          | Recover a list of users given valid filters and parameters for search|
+| organization(id)                                       | id: String                                               | Object                 | Recover organization given a valid id                                |
+| organizationByIdentifier(identifier)                   | identifier: String                                       | Object                 | Recover organization given a valid identifier                        |
+| organizationsByIds(ids)                                | ids: Array[String]                                       | Array[Object]          | Recover the list of organizations given valid ids                    |
 
 <h3>Mutate user data methods</h3>
 Every method corresponds with the GraphQL API mutation endpoint with the same name

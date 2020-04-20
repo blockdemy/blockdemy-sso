@@ -18,18 +18,21 @@ const allUserData = `
 
 const allOrganizationData = `
   id
+  identifier
   name
   logo
-  website
+  domain
   members {
-    user
+    user {
+      ${allUserData}
+    }
     role
   }
   socialMedia {
     facebook
     github
     instagram
-    linkedIn
+    linkedin
     twitter
   }
 `;
