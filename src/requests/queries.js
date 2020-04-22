@@ -73,6 +73,20 @@ const USER_SEARCH = gql`
   }
 `;
 
+const USER_GET_ROLE_IN_ORGANIZATION = gql`
+  query userGetRoleInOrganization($organizationId: ID!, $userId: ID!) {
+    userGetRoleInOrganization(organizationId: $organizationId, userId: $userId)
+  }
+`;
+
+const USERS_BY_ORGANIZATION = gql`
+  query usersByOrganization($organizationId: ID!) {
+    usersByOrganization(organizationId: $organizationId) {
+      ${allUserData}
+    }
+  }
+`;
+
 const GET_ORGANIZATION = gql`
   query organization($organizationId: ID!) {
     organization(organizationId: $organizationId) {
@@ -108,6 +122,8 @@ export {
   USER_HAS_ETH_ADDRESS,
   USER_ETH_ADDRESS_EXISTS,
   USER_SEARCH,
+  USER_GET_ROLE_IN_ORGANIZATION,
+  USERS_BY_ORGANIZATION,
   GET_ORGANIZATION,
   GET_ORGANIZATION_BY_IDENTIFIER,
   GET_ORGANIZATIONS
