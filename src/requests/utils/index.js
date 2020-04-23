@@ -1,3 +1,18 @@
+const allOrganizationData = `
+  id
+  identifier
+  name
+  logo
+  domain
+  socialMedia {
+    facebook
+    github
+    instagram
+    linkedin
+    twitter
+  }
+`;
+
 const allUserData = `
   id
   username
@@ -7,33 +22,18 @@ const allUserData = `
     email
     verified
   }
+  organizations {
+    organization {
+      ${allOrganizationData}
+    }
+    role
+  }
   profileImg
   ethAddresses {
     id
     address
     addedAt
     signature
-  }
-`;
-
-const allOrganizationData = `
-  id
-  identifier
-  name
-  logo
-  domain
-  members {
-    user {
-      ${allUserData}
-    }
-    role
-  }
-  socialMedia {
-    facebook
-    github
-    instagram
-    linkedin
-    twitter
   }
 `;
 

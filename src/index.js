@@ -15,6 +15,8 @@ import {
   USER_HAS_ETH_ADDRESS,
   USER_ETH_ADDRESS_EXISTS,
   USER_SEARCH,
+  USER_GET_ROLE_IN_ORGANIZATION,
+  USERS_BY_ORGANIZATION,
   GET_ORGANIZATION,
   GET_ORGANIZATIONS,
   GET_ORGANIZATION_BY_IDENTIFIER
@@ -23,6 +25,9 @@ import {
   USER_EDIT,
   USER_ADD_ETH_ADDRESS,
   USER_EDIT_PASSWORD,
+  USER_ADD_TO_ORGANIZATION,
+  USER_REMOVE_FROM_ORGANIZATION,
+  USER_CHANGE_ROLE_IN_ORGANIZATION,
   ORGANIZATION_ADD,
   ORGANIZATION_EDIT
 } from './requests/mutations';
@@ -177,6 +182,28 @@ class BlockdemySSO {
     return data.userSearch;
   };
 
+  userGetRoleInOrganization = async (organizationId, userId) => {
+    const { data, errors } = await this.client.query({
+      query: USER_GET_ROLE_IN_ORGANIZATION,
+      variables: { organizationId, userId }
+    });
+
+    if (errors) throw errors;
+
+    return data.userGetRoleInOrganization;
+  };
+
+  usersByOrganization = async (organizationId) => {
+    const { data, errors } = await this.client.query({
+      query: USERS_BY_ORGANIZATION,
+      variables: { organizationId }
+    });
+
+    if (errors) throw errors;
+
+    return data.usersByOrganization;
+  };
+
   // Organization
   organization = async organizationId => {
     const { data, errors } = await this.client.query({
@@ -247,6 +274,39 @@ class BlockdemySSO {
     return data.userEditPassword;
   };
 
+  userAddToOrganization = async (organizationId, userId, role, userRequestingId) => {
+    const { data, errors } = await this.client.mutate({
+      mutation: USER_ADD_TO_ORGANIZATION,
+      variables: { organizationId, userId, role, userRequestingId }
+    });
+
+    if (errors) throw errors;
+
+    return data.userAddToOrganization;
+  };
+
+  userRemoveFromOrganization = async (organizationId, userId, userRequestingId) => {
+    const { data, errors } = await this.client.mutate({
+      mutation: USER_REMOVE_FROM_ORGANIZATION,
+      variables: { organizationId, userId, userRequestingId }
+    });
+
+    if (errors) throw errors;
+
+    return data.userRemoveFromOrganization;
+  };
+
+  userChangeRoleInOrganization = async (organizationId, userId, role, userRequestingId) => {
+    const { data, errors } = await this.client.mutate({
+      mutation: USER_CHANGE_ROLE_IN_ORGANIZATION,
+      variables: { organizationId, userId, role, userRequestingId }
+    });
+
+    if (errors) throw errors;
+
+    return data.userChangeRoleInOrganization;
+  };
+
   // Organization
   organizationAdd = async (organization, userId, verificationCode) => {
     const { data, errors } = await this.client.mutate({
@@ -273,7 +333,8 @@ class BlockdemySSO {
 
   populateUsers = schema => {
     schema.post('find', async localUsers => {
-      const remoteUsers = await this.usersByIds(localUsers.map(({ ssoId }) => ssoId));
+      const ids = localUsers.map(({ ssoId }) => ssoId);
+      const remoteUsers = await this.usersByIds(ids);
 
       for (let i = 0; i < localUsers.length; i++) {
         localUsers[i].username = remoteUsers[i].username;
@@ -282,6 +343,7 @@ class BlockdemySSO {
         localUsers[i].emails = remoteUsers[i].emails;
         localUsers[i].profileImg = remoteUsers[i].profileImg;
         localUsers[i].ethAddresses = remoteUsers[i].ethAddresses;
+        localUsers[i].organizations = remoteUsers[i].organizations;
       }
     });
 
@@ -295,6 +357,7 @@ class BlockdemySSO {
         localUser.emails = remoteUser.emails;
         localUser.profileImg = remoteUser.profileImg;
         localUser.ethAddresses = remoteUser.ethAddresses;
+        localUser.organizations = remoteUser.organizations;
       }
     });
   };
@@ -304,13 +367,11 @@ class BlockdemySSO {
       const ids = localOrganizations.map(({ ssoId }) => ssoId);
 
       const remoteOrganizations = await this.organizationsByIds(ids);
-
       for (let i = 0; i < localOrganizations.length; i++) {
         localOrganizations[i].name = remoteOrganizations[i].name;
         localOrganizations[i].identifier = remoteOrganizations[i].identifier;
         localOrganizations[i].logo = remoteOrganizations[i].logo;
         localOrganizations[i].domain = remoteOrganizations[i].domain;
-        localOrganizations[i].members = remoteOrganizations[i].members;
         localOrganizations[i].socialMedia = remoteOrganizations[i].socialMedia;
       }
     });
@@ -322,7 +383,6 @@ class BlockdemySSO {
         localOrganization.identifier = remoteOrganization.identifier;
         localOrganization.logo = remoteOrganization.logo;
         localOrganization.domain = remoteOrganization.domain;
-        localOrganization.members = remoteOrganization.members;
         localOrganization.socialMedia = remoteOrganization.socialMedia;
       }
     });
