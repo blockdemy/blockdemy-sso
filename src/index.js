@@ -333,7 +333,8 @@ class BlockdemySSO {
 
   populateUsers = schema => {
     schema.post('find', async localUsers => {
-      const remoteUsers = await this.usersByIds(localUsers.map(({ ssoId }) => ssoId));
+      const ids = localUsers.map(({ ssoId }) => ssoId);
+      const remoteUsers = await this.usersByIds(ids);
 
       for (let i = 0; i < localUsers.length; i++) {
         localUsers[i].username = remoteUsers[i].username;

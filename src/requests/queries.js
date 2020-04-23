@@ -66,7 +66,7 @@ const USER_ETH_ADDRESS_EXISTS = gql`
 `;
 
 const USER_SEARCH = gql`
-  query userSearch($query: String!, $filters: [UserFilter], $params: QueryParams!) {
+  query userSearch($query: String!, $filters: [UserFilter], $params: SearchParams!) {
     userSearch(query: $query, filters: $filters, params: $params) {
       ${allUserData}
     }
