@@ -41,7 +41,7 @@ class BlockdemySSO {
       uri: SSO_URL || 'https://id.blockdemy.com/graphql',
       fetch,
       // Replace extractable file in node
-      isExtractableFile: window ? nodeIsExtractableFile : undefined,
+      isExtractableFile: this.window ? nodeIsExtractableFile : undefined,
       headers: {
         authorization: `Bearer ${API_KEY}`
       }
