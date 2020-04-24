@@ -3,7 +3,7 @@ import fetch from 'isomorphic-unfetch';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { createUploadLink } from 'apollo-upload-client';
 import {
   GET_USER,
   GET_USER_FROM_TOKEN,
@@ -36,7 +36,7 @@ class BlockdemySSO {
   constructor(API_KEY, SSO_URL) {
     const cache = new InMemoryCache();
 
-    const httpLink = new HttpLink({
+    const uploadLink = createUploadLink({
       uri: SSO_URL || 'https://id.blockdemy.com/graphql',
       fetch,
       headers: {
@@ -53,7 +53,7 @@ class BlockdemySSO {
       }
     });
 
-    const link = ApolloLink.from([errorHandler, httpLink]);
+    const link = ApolloLink.from([errorHandler, uploadLink]);
 
     this.client = new ApolloClient({
       cache,
@@ -193,7 +193,7 @@ class BlockdemySSO {
     return data.userGetRoleInOrganization;
   };
 
-  usersByOrganization = async (organizationId) => {
+  usersByOrganization = async organizationId => {
     const { data, errors } = await this.client.query({
       query: USERS_BY_ORGANIZATION,
       variables: { organizationId }
