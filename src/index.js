@@ -4,6 +4,7 @@ import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { createUploadLink } from 'apollo-upload-client';
+import { bufferizeGraphQLUpload } from './utils';
 import {
   GET_USER,
   GET_USER_FROM_TOKEN,
@@ -31,7 +32,6 @@ import {
   ORGANIZATION_ADD,
   ORGANIZATION_EDIT
 } from './requests/mutations';
-import { nodeIsExtractableFile } from './custom';
 
 class BlockdemySSO {
   constructor(API_KEY, SSO_URL) {
@@ -40,8 +40,6 @@ class BlockdemySSO {
     const uploadLink = createUploadLink({
       uri: SSO_URL || 'https://id.blockdemy.com/graphql',
       fetch,
-      // Replace extractable file in node
-      isExtractableFile: this.window ? nodeIsExtractableFile : undefined,
       headers: {
         authorization: `Bearer ${API_KEY}`
       }
@@ -391,5 +389,7 @@ class BlockdemySSO {
     });
   };
 }
+
+export { bufferizeGraphQLUpload };
 
 export default BlockdemySSO;
