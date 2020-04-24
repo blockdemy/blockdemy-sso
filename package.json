@@ -1,6 +1,6 @@
 {
   "name": "blockdemy-sso",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A client to handle blockdemy single sign on communication",
   "main": "./dist/index.js",
   "scripts": {
