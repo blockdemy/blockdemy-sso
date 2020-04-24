@@ -31,6 +31,7 @@ import {
   ORGANIZATION_ADD,
   ORGANIZATION_EDIT
 } from './requests/mutations';
+import { nodeIsExtractableFile } from './custom';
 
 class BlockdemySSO {
   constructor(API_KEY, SSO_URL) {
@@ -39,6 +40,8 @@ class BlockdemySSO {
     const uploadLink = createUploadLink({
       uri: SSO_URL || 'https://id.blockdemy.com/graphql',
       fetch,
+      // Replace extractable file in node
+      isExtractableFile: window ? nodeIsExtractableFile : undefined,
       headers: {
         authorization: `Bearer ${API_KEY}`
       }
