@@ -172,10 +172,14 @@ class BlockdemySSO {
     return data.userEthAddressExists;
   };
 
-  userSearch = async (query, filters, params) => {
+  userSearch = async (query, filters, params, ids) => {
+    const variables = { query, filters, params };
+    if (ids) {
+      variables.ids = ids;
+    }
     const { data, errors } = await this.client.query({
       query: USER_SEARCH,
-      variables: { query, filters, params }
+      variables
     });
 
     if (errors) throw errors;
