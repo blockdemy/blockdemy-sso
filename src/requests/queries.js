@@ -66,8 +66,16 @@ const USER_ETH_ADDRESS_EXISTS = gql`
 `;
 
 const USER_SEARCH = gql`
-  query userSearch($query: String!, $ids: [ID], $filters: [UserFilter], $params: SearchParams!) {
-    userSearch(query: $query, ids: $ids, filters: $filters, params: $params) {
+  query userSearch($query: String!, $filters: [UserFilter], $params: SearchParams!) {
+    userSearch(query: $query, filters: $filters, params: $params) {
+      ${allUserData}
+    }
+  }
+`;
+
+const USER_SEARCH_COMPOSED = gql`
+  query userSearchComposed($query: String!, $ids: [ID!]!, $filters: [UserFilter], $params: SearchParams!) {
+    userSearchComposed(query: $query, ids: $ids, filters: $filters, params: $params) {
       info {
         count
         prev
@@ -130,6 +138,7 @@ export {
   USER_HAS_ETH_ADDRESS,
   USER_ETH_ADDRESS_EXISTS,
   USER_SEARCH,
+  USER_SEARCH_COMPOSED,
   USER_GET_ROLE_IN_ORGANIZATION,
   USERS_BY_ORGANIZATION,
   GET_ORGANIZATION,
