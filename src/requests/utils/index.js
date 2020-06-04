@@ -22,6 +22,16 @@ const allUserData = `
     email
     verified
   }
+  privacy {
+    showSocialMedia
+    showCountry
+  }
+  socialMedia {
+    twitter
+    facebook
+    linkedin
+    github
+  }
   organizations {
     organization {
       ${allOrganizationData}
