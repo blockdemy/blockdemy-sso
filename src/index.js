@@ -16,6 +16,7 @@ import {
   USER_HAS_ETH_ADDRESS,
   USER_ETH_ADDRESS_EXISTS,
   USER_SEARCH,
+  USER_SEARCH_COMPOSED,
   USER_GET_ROLE_IN_ORGANIZATION,
   USERS_BY_ORGANIZATION,
   GET_ORGANIZATION,
@@ -181,6 +182,18 @@ class BlockdemySSO {
     if (errors) throw errors;
 
     return data.userSearch;
+  };
+
+  userSearchComposed = async (query, filters, params, ids) => {
+    const variables = { query, filters, params, ids };
+    const { data, errors } = await this.client.query({
+      query: USER_SEARCH_COMPOSED,
+      variables
+    });
+
+    if (errors) throw errors;
+
+    return data.userSearchComposed;
   };
 
   userGetRoleInOrganization = async (organizationId, userId) => {
