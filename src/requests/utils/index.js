@@ -3,7 +3,7 @@ const allOrganizationData = `
   identifier
   name
   logo
-  domain
+  domains
   socialMedia {
     facebook
     github
@@ -21,6 +21,8 @@ const allUserData = `
   emails {
     email
     verified
+    verifiedAt
+    primary
   }
   organizations {
     organization {
