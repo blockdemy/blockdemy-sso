@@ -24,6 +24,16 @@ const allUserData = `
     verifiedAt
     primary
   }
+  privacy {
+    showSocialMedia
+    showCountry
+  }
+  socialMedia {
+    twitter
+    facebook
+    linkedin
+    github
+  }
   organizations {
     organization {
       ${allOrganizationData}

@@ -358,6 +358,8 @@ class BlockdemySSO {
         localUsers[i].profileImg = remoteUsers[i].profileImg;
         localUsers[i].ethAddresses = remoteUsers[i].ethAddresses;
         localUsers[i].organizations = remoteUsers[i].organizations;
+        localUsers[i].privacy = remoteUsers[i].privacy;
+        localUsers[i].socialMedia = remoteUsers[i].socialMedia;
       }
     });
 
@@ -372,6 +374,8 @@ class BlockdemySSO {
         localUser.profileImg = remoteUser.profileImg;
         localUser.ethAddresses = remoteUser.ethAddresses;
         localUser.organizations = remoteUser.organizations;
+        localUser.privacy = remoteUser.privacy;
+        localUser.socialMedia = remoteUser.socialMedia;
       }
     });
   };
