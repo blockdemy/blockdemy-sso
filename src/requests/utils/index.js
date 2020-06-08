@@ -3,7 +3,7 @@ const allOrganizationData = `
   identifier
   name
   logo
-  domains
+  domain
   socialMedia {
     facebook
     github
