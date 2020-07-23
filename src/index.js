@@ -350,16 +350,24 @@ class BlockdemySSO {
       const ids = localUsers.map(({ ssoId }) => ssoId);
       const remoteUsers = await this.usersByIds(ids);
 
+      const idToIndexMap = {};
+
       for (let i = 0; i < localUsers.length; i++) {
-        localUsers[i].username = remoteUsers[i].username;
-        localUsers[i].firstName = remoteUsers[i].firstName;
-        localUsers[i].lastName = remoteUsers[i].lastName;
-        localUsers[i].emails = remoteUsers[i].emails;
-        localUsers[i].profileImg = remoteUsers[i].profileImg;
-        localUsers[i].ethAddresses = remoteUsers[i].ethAddresses;
-        localUsers[i].organizations = remoteUsers[i].organizations;
-        localUsers[i].privacy = remoteUsers[i].privacy;
-        localUsers[i].socialMedia = remoteUsers[i].socialMedia;
+        idToIndexMap[localUsers[i].id] = i;
+      }
+
+      for (let i = 0; i < localUsers.length; i++) {
+        const originalIndex = idToIndexMap[remoteUsers[i].id];
+
+        localUsers[originalIndex].username = remoteUsers[i].username;
+        localUsers[originalIndex].firstName = remoteUsers[i].firstName;
+        localUsers[originalIndex].lastName = remoteUsers[i].lastName;
+        localUsers[originalIndex].emails = remoteUsers[i].emails;
+        localUsers[originalIndex].profileImg = remoteUsers[i].profileImg;
+        localUsers[originalIndex].ethAddresses = remoteUsers[i].ethAddresses;
+        localUsers[originalIndex].organizations = remoteUsers[i].organizations;
+        localUsers[originalIndex].privacy = remoteUsers[i].privacy;
+        localUsers[originalIndex].socialMedia = remoteUsers[i].socialMedia;
       }
     });
 
@@ -383,14 +391,22 @@ class BlockdemySSO {
   populateOrganizations = schema => {
     schema.post('find', async localOrganizations => {
       const ids = localOrganizations.map(({ ssoId }) => ssoId);
-
       const remoteOrganizations = await this.organizationsByIds(ids);
+
+      const idToIndexMap = {};
+
       for (let i = 0; i < localOrganizations.length; i++) {
-        localOrganizations[i].name = remoteOrganizations[i].name;
-        localOrganizations[i].identifier = remoteOrganizations[i].identifier;
-        localOrganizations[i].logo = remoteOrganizations[i].logo;
-        localOrganizations[i].domain = remoteOrganizations[i].domain;
-        localOrganizations[i].socialMedia = remoteOrganizations[i].socialMedia;
+        idToIndexMap[localOrganizations[i].id] = i;
+      }
+
+      for (let i = 0; i < localOrganizations.length; i++) {
+        const originalIndex = idToIndexMap[remoteOrganizations[i].id];
+
+        localOrganizations[originalIndex].name = remoteOrganizations[i].name;
+        localOrganizations[originalIndex].identifier = remoteOrganizations[i].identifier;
+        localOrganizations[originalIndex].logo = remoteOrganizations[i].logo;
+        localOrganizations[originalIndex].domain = remoteOrganizations[i].domain;
+        localOrganizations[originalIndex].socialMedia = remoteOrganizations[i].socialMedia;
       }
     });
 
