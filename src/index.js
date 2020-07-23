@@ -350,14 +350,14 @@ class BlockdemySSO {
       const ids = localUsers.map(({ ssoId }) => ssoId);
       const remoteUsers = await this.usersByIds(ids);
 
-      const idToIndexMap = {};
+      const ssoIdToIndexMap = {};
 
       for (let i = 0; i < localUsers.length; i++) {
-        idToIndexMap[localUsers[i].id] = i;
+        ssoIdToIndexMap[localUsers[i].ssoId] = i;
       }
 
       for (let i = 0; i < localUsers.length; i++) {
-        const originalIndex = idToIndexMap[remoteUsers[i].id];
+        const originalIndex = ssoIdToIndexMap[remoteUsers[i].id];
 
         localUsers[originalIndex].username = remoteUsers[i].username;
         localUsers[originalIndex].firstName = remoteUsers[i].firstName;
@@ -393,14 +393,14 @@ class BlockdemySSO {
       const ids = localOrganizations.map(({ ssoId }) => ssoId);
       const remoteOrganizations = await this.organizationsByIds(ids);
 
-      const idToIndexMap = {};
+      const ssoIdToIndexMap = {};
 
       for (let i = 0; i < localOrganizations.length; i++) {
-        idToIndexMap[localOrganizations[i].id] = i;
+        ssoIdToIndexMap[localOrganizations[i].ssoId] = i;
       }
 
       for (let i = 0; i < localOrganizations.length; i++) {
-        const originalIndex = idToIndexMap[remoteOrganizations[i].id];
+        const originalIndex = ssoIdToIndexMap[remoteOrganizations[i].id];
 
         localOrganizations[originalIndex].name = remoteOrganizations[i].name;
         localOrganizations[originalIndex].identifier = remoteOrganizations[i].identifier;
