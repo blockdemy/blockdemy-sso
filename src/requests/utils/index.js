@@ -47,6 +47,14 @@ const allUserData = `
     addedAt
     signature
   }
+  stripeId
+  stripeInfo {
+    address
+    balance
+    created
+    invoicePrefix
+    preferredLocales
+  }
 `;
 
 export { allUserData, allOrganizationData };

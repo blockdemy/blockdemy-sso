@@ -368,6 +368,8 @@ class BlockdemySSO {
         localUsers[originalIndex].organizations = remoteUsers[i].organizations;
         localUsers[originalIndex].privacy = remoteUsers[i].privacy;
         localUsers[originalIndex].socialMedia = remoteUsers[i].socialMedia;
+        localUsers[originalIndex].stripeId = remoteUsers[i].stripeId;
+        localUsers[originalIndex].stripeInfo = remoteUsers[i].stripeInfo;
       }
     });
 
@@ -384,6 +386,8 @@ class BlockdemySSO {
         localUser.organizations = remoteUser.organizations;
         localUser.privacy = remoteUser.privacy;
         localUser.socialMedia = remoteUser.socialMedia;
+        localUser.stripeId = remoteUser.stripeId;
+        localUser.stripeInfo = remoteUser.stripeInfo;
       }
     });
   };
