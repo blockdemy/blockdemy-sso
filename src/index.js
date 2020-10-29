@@ -21,7 +21,8 @@ import {
   USERS_BY_ORGANIZATION,
   GET_ORGANIZATION,
   GET_ORGANIZATIONS,
-  GET_ORGANIZATION_BY_IDENTIFIER
+  GET_ORGANIZATION_BY_IDENTIFIER,
+  GET_ORGANIZATION_SUBSCRIPTION
 } from './requests/queries';
 import {
   USER_EDIT,
@@ -251,6 +252,17 @@ class BlockdemySSO {
 
     return data.organizationsByIds;
   };
+
+  organizationSubscription = async (organizationId, service) => {
+    const { data, errors } = await this.client.query({
+      query: GET_ORGANIZATION_SUBSCRIPTION,
+      variables: { organizationId, service }
+    });
+
+    if (errors) throw errors;
+
+    return data.organizationSubscription;
+  }
   // END OF QUERIES
 
   // START OF MUTATIONS

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import { allUserData, allOrganizationData } from './utils';
+import { allUserData, allOrganizationData, allSubscriptionData } from './utils';
 
 const GET_USER = gql`
   query user($id: ID!) {
@@ -127,6 +127,14 @@ const GET_ORGANIZATIONS = gql`
   }
 `;
 
+const GET_ORGANIZATION_SUBSCRIPTION = gql`
+  query organizationSubscription($organizationId: ID!, $service: Service!) {
+    organizationSubscription(organizationId: $organizationId, service: $service) {
+      ${allSubscriptionData}
+    }
+  }
+`;
+
 export {
   GET_USER,
   GET_USER_FROM_TOKEN,
@@ -143,5 +151,6 @@ export {
   USERS_BY_ORGANIZATION,
   GET_ORGANIZATION,
   GET_ORGANIZATION_BY_IDENTIFIER,
-  GET_ORGANIZATIONS
+  GET_ORGANIZATIONS,
+  GET_ORGANIZATION_SUBSCRIPTION
 };

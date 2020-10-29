@@ -49,4 +49,10 @@ const allUserData = `
   }
 `;
 
-export { allUserData, allOrganizationData };
+const allSubscriptionData = `
+  subscription
+  expirationDate
+  product
+`;
+
+export { allUserData, allOrganizationData, allSubscriptionData };
